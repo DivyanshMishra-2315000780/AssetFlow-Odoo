@@ -1,31 +1,79 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { AppLayout } from "@/components/layout/AppLayout";
-import AssetsPage from "@/features/assets";
+import { MainLayout } from "@/layout/MainLayout";
+import { AuthLayout } from "@/layout/AuthLayout";
+import { ProtectedRoute } from "@/app/ProtectedRoute";
 
-// Dummy components for now, will replace with real features
-const Dashboard = () => <div className="p-6 bg-card rounded-lg shadow-sm border border-border">Welcome to AssetFlow Dashboard</div>;
-const AllocationsPage = () => <div className="p-6 bg-card rounded-lg shadow-sm border border-border">Allocations Module (To be implemented)</div>;
-const BookingsPage = () => <div className="p-6 bg-card rounded-lg shadow-sm border border-border">Bookings Module (To be implemented)</div>;
-const MaintenancePage = () => <div className="p-6 bg-card rounded-lg shadow-sm border border-border">Maintenance Module (To be implemented)</div>;
-const AuditsPage = () => <div className="p-6 bg-card rounded-lg shadow-sm border border-border">Audits Module (To be implemented)</div>;
-const ReportsPage = () => <div className="p-6 bg-card rounded-lg shadow-sm border border-border">Reports Module (To be implemented)</div>;
+// Auth pages
+import LoginPage from "@/features/auth/pages/Login";
+import SignupPage from "@/features/auth/pages/Signup";
+
+// Feature pages
+import DashboardPage from "@/features/dashboard";
+import AssetsPage from "@/features/assets";
+import OrganizationPage from "@/features/organization";
+
+// Placeholder pages (to be replaced)
+const AllocationsPage = () => (
+  <div className="p-8 rounded-xl bg-card border border-border text-center">
+    <h2 className="text-lg font-semibold text-foreground mb-1">Allocations</h2>
+    <p className="text-muted-foreground text-sm">Module coming soon…</p>
+  </div>
+);
+const BookingsPage = () => (
+  <div className="p-8 rounded-xl bg-card border border-border text-center">
+    <h2 className="text-lg font-semibold text-foreground mb-1">Bookings</h2>
+    <p className="text-muted-foreground text-sm">Module coming soon…</p>
+  </div>
+);
+const MaintenancePage = () => (
+  <div className="p-8 rounded-xl bg-card border border-border text-center">
+    <h2 className="text-lg font-semibold text-foreground mb-1">Maintenance</h2>
+    <p className="text-muted-foreground text-sm">Module coming soon…</p>
+  </div>
+);
+const AuditsPage = () => (
+  <div className="p-8 rounded-xl bg-card border border-border text-center">
+    <h2 className="text-lg font-semibold text-foreground mb-1">Audits</h2>
+    <p className="text-muted-foreground text-sm">Module coming soon…</p>
+  </div>
+);
+const ReportsPage = () => (
+  <div className="p-8 rounded-xl bg-card border border-border text-center">
+    <h2 className="text-lg font-semibold text-foreground mb-1">Reports</h2>
+    <p className="text-muted-foreground text-sm">Module coming soon…</p>
+  </div>
+);
 
 export const router = createBrowserRouter([
+  // ---- Public Auth Routes ----
   {
-    path: "/",
-    element: <AppLayout />,
+    element: <AuthLayout />,
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: "assets/*", element: <AssetsPage /> },
-      { path: "allocations/*", element: <AllocationsPage /> },
-      { path: "bookings/*", element: <BookingsPage /> },
-      { path: "maintenance/*", element: <MaintenancePage /> },
-      { path: "audits/*", element: <AuditsPage /> },
-      { path: "reports/*", element: <ReportsPage /> },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/signup", element: <SignupPage /> },
     ],
   },
+
+  // ---- Protected App Routes ----
   {
-    path: "*",
-    element: <Navigate to="/" replace />
-  }
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <MainLayout />,
+        children: [
+          { path: "/", element: <DashboardPage /> },
+          { path: "/assets", element: <AssetsPage /> },
+          { path: "/allocations", element: <AllocationsPage /> },
+          { path: "/bookings", element: <BookingsPage /> },
+          { path: "/maintenance", element: <MaintenancePage /> },
+          { path: "/audits", element: <AuditsPage /> },
+          { path: "/reports", element: <ReportsPage /> },
+          { path: "/organization", element: <OrganizationPage /> },
+        ],
+      },
+    ],
+  },
+
+  // Fallback redirect
+  { path: "*", element: <Navigate to="/" replace /> },
 ]);
