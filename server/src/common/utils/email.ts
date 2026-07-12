@@ -18,12 +18,12 @@ const createTransporter = async () => {
   if (env.NODE_ENV === 'production') {
     // Return production transporter
     return nodemailer.createTransport({
-      host: 'smtp.example.com',
-      port: 587,
+      host: env.SMTP_HOST,
+      port: env.SMTP_PORT,
       secure: false,
       auth: {
-        user: 'prod_user',
-        pass: 'prod_pass',
+        user: env.SMTP_USER,
+        pass: env.SMTP_PASS,
       },
     });
   }
@@ -31,12 +31,12 @@ const createTransporter = async () => {
   // Create a mock account with ethereal.email
   const testAccount = await nodemailer.createTestAccount();
   return nodemailer.createTransport({
-    host: testAccount.smtp.host,
-    port: testAccount.smtp.port,
-    secure: testAccount.smtp.secure,
+    host: env.SMTP_HOST,
+    port: env.SMTP_PORT,
+    secure: false,
     auth: {
-      user: testAccount.user,
-      pass: testAccount.pass,
+      user: env.SMTP_USER,
+      pass: env.SMTP_PASS,
     },
   });
 };
