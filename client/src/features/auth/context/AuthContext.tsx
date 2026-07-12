@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { type User } from '@/types';
+import api from '@/lib/api';
 
 interface AuthState {
   user: User | null;
@@ -51,6 +52,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (token: string, user: User) => {
     localStorage.setItem('auth_token', token);
     localStorage.setItem('auth_user', JSON.stringify(user));
+    // set default authorization header for api client
+    try {
+      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    } catch (e) {
+      // ignore
+    }
     setState({
       user,
       token,
@@ -62,6 +69,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
+    try {
+      delete api.defaults.headers.common.Authorization;
+    } catch (e) {
+      // ignore
+    }
     setState({
       user: null,
       token: null,

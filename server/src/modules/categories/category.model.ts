@@ -80,7 +80,7 @@ const categorySchema = new Schema<ICategory>(
 );
 
 // ── Indexes ──────────────────────────────────────────────────
-categorySchema.index({ name: 1 }, { unique: true });
+// `name` has `unique: true` on the field above — avoid duplicate index declaration.
 
 // ── Model ────────────────────────────────────────────────────
 export const Category = model<ICategory>('Category', categorySchema);

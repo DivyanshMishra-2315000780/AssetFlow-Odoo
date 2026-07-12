@@ -58,8 +58,8 @@ const departmentSchema = new Schema<IDepartment>(
 );
 
 // ── Indexes ──────────────────────────────────────────────────
-departmentSchema.index({ name: 1 }, { unique: true });
-departmentSchema.index({ code: 1 }, { unique: true });
+// `name` and `code` have `unique: true` declared on their fields above —
+// remove duplicate schema-level unique index declarations to avoid warnings.
 
 // ── Model ────────────────────────────────────────────────────
 export const Department = model<IDepartment>('Department', departmentSchema);

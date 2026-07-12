@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Loader2, LogIn } from "lucide-react";
 import { useAuth } from "@/features/auth/context/AuthContext";
+import api from '@/lib/api';
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -17,25 +18,12 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-// ---- Mock login (replace with real API call when backend is ready) ----
-async function mockLogin(email: string, _password: string): Promise<{ token: string; user: User }> {
-  await new Promise((res) => setTimeout(res, 800)); // simulate network delay
-  if (email === "admin@assetflow.com") {
-    return {
-      token: "mock-jwt-token-admin-12345",
-      user: { id: "1", name: "Admin User", email, role: "Admin", department: "IT" },
-    };
-  }
-  if (email === "manager@assetflow.com") {
-    return {
-      token: "mock-jwt-token-manager-67890",
-      user: { id: "2", name: "Jane Manager", email, role: "Manager", department: "Operations" },
-    };
-  }
-  return {
-    token: "mock-jwt-token-employee-00001",
-    user: { id: "3", name: "John Employee", email, role: "Employee", department: "Finance" },
-  };
+// Real API login
+async function apiLogin(email: string, password: string): Promise<{ token: string; user: User }> {
+  const resp = await api.post('/api/auth/login', { email, password });
+  // server returns { success, message, data }
+  const payload = resp.data?.data || resp.data;
+  return { token: payload.accessToken || payload.access_token || payload.access, user: payload.user };
 }
 
 export default function LoginPage() {
@@ -55,7 +43,7 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginFormData) {
     try {
-      const { token, user } = await mockLogin(data.email, data.password);
+      const { token, user } = await apiLogin(data.email, data.password);
       login(token, user);
     } catch {
       form.setError("password", { message: "Invalid email or password." });

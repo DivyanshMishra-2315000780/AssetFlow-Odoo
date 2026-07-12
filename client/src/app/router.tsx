@@ -12,6 +12,9 @@ import DashboardPage from "@/features/dashboard";
 import AssetsPage from "@/features/assets";
 import OrganizationPage from "@/features/organization";
 
+// Landing Page
+import LandingPage from "@/pages/LandingPage";
+
 // Placeholder pages (to be replaced)
 const AllocationsPage = () => (
   <div className="p-8 rounded-xl bg-card border border-border text-center">
@@ -53,6 +56,12 @@ export const router = createBrowserRouter([
       { path: "/signup", element: <SignupPage /> },
     ],
   },
+  
+  // ---- Public Landing Route ----
+  {
+    path: "/",
+    element: <LandingPage />,
+  },
 
   // ---- Protected App Routes ----
   {
@@ -61,7 +70,7 @@ export const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-          { path: "/", element: <DashboardPage /> },
+          { path: "/dashboard", element: <DashboardPage /> },
           { path: "/assets", element: <AssetsPage /> },
           { path: "/allocations", element: <AllocationsPage /> },
           { path: "/bookings", element: <BookingsPage /> },

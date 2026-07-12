@@ -103,7 +103,8 @@ const assetSchema = new Schema<IAsset>(
 assetSchema.index({ status: 1 });
 assetSchema.index({ departmentId: 1 });
 assetSchema.index({ categoryId: 1 });
-assetSchema.index({ assetTag: 1 }, { unique: true });
+// `assetTag` is already declared with `unique: true` on the field above —
+// avoid declaring the same index twice to prevent mongoose duplicate-index warnings.
 
 // ── Pre-save: auto-generate assetTag ────────────────────────
 assetSchema.pre('save', async function () {

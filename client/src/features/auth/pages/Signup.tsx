@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Loader2, UserPlus } from "lucide-react";
 import { useAuth } from "@/features/auth/context/AuthContext";
+import api from '@/lib/api';
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -25,17 +26,23 @@ const signupSchema = z
 
 type SignupFormData = z.infer<typeof signupSchema>;
 
-async function mockSignup(data: SignupFormData): Promise<{ token: string; user: User }> {
-  await new Promise((res) => setTimeout(res, 1000));
-  return {
-    token: "mock-jwt-token-new-user",
-    user: {
-      id: Date.now().toString(),
-      name: data.name,
-      email: data.email,
-      role: "Admin",
-    },
-  };
+async function apiSignup(data: SignupFormData): Promise<{ token: string; user: User }> {
+  // map full name to firstName/lastName for backend
+  const names = data.name.trim().split(/\s+/);
+  const firstName = names.shift() || '';
+  const lastName = names.join(' ') || '';
+
+  await api.post('/api/auth/register', {
+    firstName,
+    lastName,
+    email: data.email,
+    password: data.password,
+  });
+
+  // After successful register, attempt login to obtain tokens
+  const resp = await api.post('/api/auth/login', { email: data.email, password: data.password });
+  const payload = resp.data?.data || resp.data;
+  return { token: payload.accessToken || payload.access_token || payload.access, user: payload.user };
 }
 
 export default function SignupPage() {
@@ -60,7 +67,7 @@ export default function SignupPage() {
   }, [isAuthenticated, navigate]);
 
   async function onSubmit(data: SignupFormData) {
-    const { token, user } = await mockSignup(data);
+    const { token, user } = await apiSignup(data);
     login(token, user);
   }
 

@@ -85,7 +85,8 @@ const userSchema = new Schema<IUser>(
 );
 
 // ── Indexes ──────────────────────────────────────────────────
-userSchema.index({ email: 1 }, { unique: true });
+// `email` is declared with `unique: true` on the field above — avoid
+// declaring the same unique index again to prevent duplicate-index warnings.
 
 // ── Pre-save: hash password ──────────────────────────────────
 userSchema.pre('save', async function () {
