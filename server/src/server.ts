@@ -1,8 +1,10 @@
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
-import { env } from './config/env.js';
-import { connectDB } from './config/db.js';
-import app from './app.js';
+import { env } from './config/env.ts';
+import { connectDB } from './config/db.ts';
+import app from './app.ts';
+import { initializeSocket } from './socket/index.ts';
+import { initializeJobs } from './jobs/index.ts';
 
 // ── Create HTTP Server ──
 const server = http.createServer(app);
@@ -15,19 +17,13 @@ export const io = new SocketIOServer(server, {
   },
 });
 
-// Socket auth & room joining will be implemented in Phase 9
-io.on('connection', (socket) => {
-  console.log(`🔌 Socket connected: ${socket.id}`);
-
-  socket.on('disconnect', () => {
-    console.log(`🔌 Socket disconnected: ${socket.id}`);
-  });
-});
+initializeSocket(io);
 
 // ── Start ──
 const start = async (): Promise<void> => {
   try {
     await connectDB();
+    initializeJobs();
 
     server.listen(env.PORT, () => {
       console.log(`🚀 AssetFlow server running on port ${env.PORT} [${env.NODE_ENV}]`);
