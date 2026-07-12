@@ -1,10 +1,11 @@
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
-import { env } from './config/env.ts';
-import { connectDB } from './config/db.ts';
-import app from './app.ts';
-import { initializeSocket } from './socket/index.ts';
-import { initializeJobs } from './jobs/index.ts';
+import { env } from './config/env.js';
+import { connectDB } from './config/db.js';
+import app from './app.js';
+import { initializeSocket } from './socket/index.js';
+import { initializeJobs } from './jobs/index.js';
+import { initializeNotificationSubscriber } from './modules/notifications/notification.subscriber.js';
 
 // ── Create HTTP Server ──
 const server = http.createServer(app);
@@ -24,6 +25,7 @@ const start = async (): Promise<void> => {
   try {
     await connectDB();
     initializeJobs();
+    initializeNotificationSubscriber();
 
     server.listen(env.PORT, () => {
       console.log(`🚀 AssetFlow server running on port ${env.PORT} [${env.NODE_ENV}]`);
