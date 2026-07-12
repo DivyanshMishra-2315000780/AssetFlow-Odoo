@@ -38,7 +38,7 @@ export default function LoginPage() {
   const { isSubmitting } = form.formState;
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/", { replace: true });
+    if (isAuthenticated) navigate("/dashboard", { replace: true });
   }, [isAuthenticated, navigate]);
 
   async function onSubmit(data: LoginFormData) {

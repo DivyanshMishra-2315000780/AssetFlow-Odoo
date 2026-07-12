@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Building2, Tag, Users, MoreHorizontal, ShieldAlert, Edit2 } from "lucide-react";
+import { Plus, Building2, Tag, Users, ShieldAlert, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable, type DataTableColumn } from "@/components/ui/core/DataTable";
 import { StatusBadge } from "@/components/ui/core/StatusBadge";
@@ -31,32 +31,32 @@ export default function OrganizationPage() {
 
   // ---- Column Configs ----
   const deptColumns: DataTableColumn<any>[] = [
-    { key: "name", header: "Department Name" },
-    { key: "head", header: "Department Head", className: "text-muted-foreground font-medium" },
-    { key: "parent", header: "Parent Dept", className: "text-muted-foreground text-sm" },
+    { key: "name", header: "Department Name", cell: (row) => <span className="font-bold">{row.name}</span> },
+    { key: "head", header: "Department Head", className: "font-medium" },
+    { key: "parent", header: "Parent Dept", className: "text-muted-foreground text-sm font-medium" },
     { key: "status", header: "Status", cell: (row) => <StatusBadge status={row.status} variant={row.status === 'Active' ? 'success' : 'default'} /> },
     {
       key: "actions",
       header: "",
       cell: () => (
-        <button className="p-2 hover:bg-muted rounded-md text-gray-500">
-          <Edit2 className="w-4 h-4" />
+        <button className="p-2 bg-white border-2 border-border hover:shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] rounded-full text-foreground transition-all">
+          <Edit2 className="w-3 h-3 stroke-[3]" />
         </button>
       ),
     },
   ];
 
   const catColumns: DataTableColumn<any>[] = [
-    { key: "name", header: "Category Name" },
-    { key: "description", header: "Description", className: "text-muted-foreground" },
-    { key: "extraFields", header: "Custom Fields", className: "text-xs font-mono bg-gray-100 px-2 py-1 rounded" },
-    { key: "assetCount", header: "Assets", cell: (row) => <span className="font-semibold">{row.assetCount}</span> },
+    { key: "name", header: "Category Name", cell: (row) => <span className="font-bold">{row.name}</span> },
+    { key: "description", header: "Description", className: "font-medium" },
+    { key: "extraFields", header: "Custom Fields", cell: (row) => <span className="text-xs font-mono font-bold bg-secondary px-2 py-1 rounded-full border border-border">{row.extraFields}</span> },
+    { key: "assetCount", header: "Assets", cell: (row) => <span className="font-black text-lg bg-primary px-3 py-1 rounded-full border border-border">{row.assetCount}</span> },
     {
       key: "actions",
       header: "",
       cell: () => (
-        <button className="p-2 hover:bg-muted rounded-md text-gray-500">
-          <Edit2 className="w-4 h-4" />
+        <button className="p-2 bg-white border-2 border-border hover:shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] rounded-full text-foreground transition-all">
+          <Edit2 className="w-3 h-3 stroke-[3]" />
         </button>
       ),
     },
@@ -68,33 +68,33 @@ export default function OrganizationPage() {
       header: "Employee",
       cell: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-semibold">
+          <div className="w-10 h-10 rounded-full bg-secondary border-2 border-border flex items-center justify-center text-foreground text-sm font-black shadow-sm">
             {row.name.split(" ").map((w: string) => w[0]).join("").toUpperCase()}
           </div>
           <div>
-            <p className="font-medium text-foreground">{row.name}</p>
-            <p className="text-xs text-muted-foreground">{row.email}</p>
+            <p className="font-bold text-foreground">{row.name}</p>
+            <p className="text-xs font-medium text-muted-foreground">{row.email}</p>
           </div>
         </div>
       ),
     },
     { key: "role", header: "Role", cell: (row) => (
-      <span className={`px-2 py-1 rounded text-xs font-semibold ${row.role === 'Employee' ? 'bg-gray-100 text-gray-600' : 'bg-blue-100 text-blue-700 border border-blue-200'}`}>
+      <span className={`px-3 py-1 rounded-full text-xs font-bold border-2 border-border ${row.role === 'Employee' ? 'bg-white' : 'bg-accent'}`}>
         {row.role}
       </span>
     )},
-    { key: "departmentName", header: "Department" },
+    { key: "departmentName", header: "Department", className: "font-bold" },
     { key: "status", header: "Status", cell: (row) => <StatusBadge status={row.status} variant="success" /> },
     {
       key: "actions",
       header: "Admin Action",
       cell: (row) => (
         row.role === 'Employee' ? (
-          <button className="flex items-center gap-1 text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded hover:bg-blue-100 transition border border-blue-100">
-            <ShieldAlert className="w-3 h-3" /> Promote Role
+          <button className="flex items-center gap-2 text-xs font-bold text-foreground bg-primary px-4 py-2 rounded-full hover:shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] transition-all border-2 border-border">
+            <ShieldAlert className="w-3 h-3 stroke-[3]" /> Promote Role
           </button>
         ) : (
-          <button className="flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-50 px-3 py-1.5 rounded hover:bg-gray-100 transition border border-gray-100">
+          <button className="flex items-center gap-2 text-xs font-bold text-foreground bg-white px-4 py-2 rounded-full hover:shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] transition-all border-2 border-border">
             Edit Access
           </button>
         )
@@ -109,41 +109,41 @@ export default function OrganizationPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Organization Setup</h2>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Admin screen to maintain master data (Departments, Categories, Users).
+          <h2 className="text-3xl font-black text-foreground">Organization Setup</h2>
+          <p className="text-sm font-medium text-muted-foreground mt-2">
+            Maintain master data for departments, categories, and users.
           </p>
         </div>
-        <Button className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-          <Plus className="w-4 h-4" />
+        <button className="flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-full text-sm font-bold hover:bg-gray-800 transition shadow-md w-fit">
+          <Plus className="w-4 h-4 stroke-[3]" />
           {activeTab === 'departments' ? 'New Department' : activeTab === 'categories' ? 'New Category' : 'Invite Employee'}
-        </Button>
+        </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 rounded-xl bg-muted w-fit border border-border">
+      <div className="flex gap-2">
         {tabConfig.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => setActiveTab(id)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
+            className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold transition-all duration-200 border-2 ${
               activeTab === id
-                ? "bg-card text-foreground shadow-sm ring-1 ring-border"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary border-border text-foreground shadow-[2px_2px_0px_0px_rgba(17,17,17,1)] -translate-y-0.5"
+                : "bg-white border-transparent text-muted-foreground hover:border-border hover:shadow-sm"
             }`}
           >
-            <Icon className="w-4 h-4" />
+            <Icon className="w-4 h-4 stroke-[3]" />
             {label}
           </button>
         ))}
       </div>
 
       {/* Table Content */}
-      <div className="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-white border-2 border-border rounded-[24px] shadow-[4px_4px_0px_0px_rgba(17,17,17,1)] overflow-hidden p-2">
         {activeTab === "departments" && (
           <DataTable
             columns={deptColumns}

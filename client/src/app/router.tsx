@@ -15,37 +15,11 @@ import OrganizationPage from "@/features/organization";
 // Landing Page
 import LandingPage from "@/pages/LandingPage";
 
-// Placeholder pages (to be replaced)
-const AllocationsPage = () => (
-  <div className="p-8 rounded-xl bg-card border border-border text-center">
-    <h2 className="text-lg font-semibold text-foreground mb-1">Allocations</h2>
-    <p className="text-muted-foreground text-sm">Module coming soon…</p>
-  </div>
-);
-const BookingsPage = () => (
-  <div className="p-8 rounded-xl bg-card border border-border text-center">
-    <h2 className="text-lg font-semibold text-foreground mb-1">Bookings</h2>
-    <p className="text-muted-foreground text-sm">Module coming soon…</p>
-  </div>
-);
-const MaintenancePage = () => (
-  <div className="p-8 rounded-xl bg-card border border-border text-center">
-    <h2 className="text-lg font-semibold text-foreground mb-1">Maintenance</h2>
-    <p className="text-muted-foreground text-sm">Module coming soon…</p>
-  </div>
-);
-const AuditsPage = () => (
-  <div className="p-8 rounded-xl bg-card border border-border text-center">
-    <h2 className="text-lg font-semibold text-foreground mb-1">Audits</h2>
-    <p className="text-muted-foreground text-sm">Module coming soon…</p>
-  </div>
-);
-const ReportsPage = () => (
-  <div className="p-8 rounded-xl bg-card border border-border text-center">
-    <h2 className="text-lg font-semibold text-foreground mb-1">Reports</h2>
-    <p className="text-muted-foreground text-sm">Module coming soon…</p>
-  </div>
-);
+import AllocationsPage from "@/features/allocations";
+import BookingsPage from "@/features/bookings";
+import MaintenancePage from "@/features/maintenance";
+import AuditsPage from "@/features/audits";
+import ReportsPage from "@/features/reports";
 
 export const router = createBrowserRouter([
   // ---- Public Auth Routes ----
